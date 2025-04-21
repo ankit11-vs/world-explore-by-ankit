@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Practice typing, take fun quizzes, plan trips, and learn cool sports facts on website!">
+    <title>ExploreWorld Hub, typing Practice, Quiz, Trip plan, virtual Vacation , sports facts</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --accent: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem auto;
+            max-width: 800px;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .active-section {
+            display: block;
+        }
+        
+        /* Cities Grid */
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .city-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .city-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .city-info {
+            padding: 1.5rem;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-question {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quiz-options {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .quiz-option {
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            background: var(--light);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #d6eaf8;
+        }
+        
+        .quiz-option.selected {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .quiz-option.correct {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .quiz-option.incorrect {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback-correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Typing Test Styles */
+        .typing-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .typing-text {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        #typing-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: none;
+            min-height: 150px;
+        }
+        
+        .typing-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        
+        /* Sports Facts Styles */
+        .sports-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .sport-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sport-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sport-card h3 span {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        /* Trip Planner Styles */
+        .trip-planner {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .trip-plan {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trip-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .trip-details {
+            padding: 1.5rem;
+        }
+        
+        .trip-details ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .stat-box {
+                margin: 10px 0;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ExploreWorld Hub</h1>
+        <p>Travel • Sports • Learning</p>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number">6+ years</div>
+                <div>of travel expertise</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">Daily</div>
+                <div>new quizzes & challenges</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">Free</div>
+                <div>typing tests & exams</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">20,000+</div>
+                <div>fun facts archived</div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="nav-buttons">
+        <button class="nav-btn" data-section="cities">Cities</button>
+        <button class="nav-btn" data-section="quiz">Quiz</button>
+        <button class="nav-btn" data-section="trip-planner">Trip Planner</button>
+        <button class="nav-btn" data-section="typing">Typing Practice</button>
+        <button class="nav-btn" data-section="sports">Sports Facts</button>
+    </div>
+    
+    <!-- Cities Section -->
+    <section id="cities" class="section active-section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Featured Cities</h2>
+        <div class="cities-grid" id="cities-container">
+            <!-- Cities will be loaded here by JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Quiz Section -->
+    <section id="quiz" class="section">
+        <div class="quiz-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Travel Quiz Challenge</h2>
+            <div id="quiz-questions-container">
+                <!-- Quiz questions will be loaded here by JavaScript -->
+            </div>
+            <button id="submit-quiz" class="nav-btn" style="display: block; margin: 2rem auto;">Submit Answers</button>
+            <div id="quiz-score" style="text-align: center; font-weight: bold; font-size: 1.2rem; margin-top: 1rem;"></div>
+        </div>
+    </section>
+    
+    <!-- Trip Planner Section -->
+    <section id="trip-planner" class="section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Trip Planner</h2>
+        <div class="trip-planner" id="trip-plans-container">
+            <!-- Trip plans will be loaded here by JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Typing Practice Section -->
+    <section id="typing" class="section">
+        <div class="typing-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Typing Practice</h2>
+            <div class="typing-text" id="typing-text">
+                <!-- Typing text will be loaded here by JavaScript -->
+            </div>
+            <textarea id="typing-input" placeholder="Start typing the text above when you click 'Start Test'..."></textarea>
+            <div class="typing-stats">
+                <div>Timer: <span id="timer">0</span>s</div>
+                <div>Accuracy: <span id="accuracy">0</span>%</div>
+                <div>WPM: <span id="wpm">0</span></div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                <button id="start-typing" class="nav-btn">Start Test</button>
+                <button id="reset-typing" class="nav-btn" style="background: var(--accent);">Reset</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sports Facts Section -->
+    <section id="sports" class="section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Sports & Health Facts</h2>
+        <div class="sports-facts" id="sports-facts-container">
+            <!-- Sports facts will be loaded here by JavaScript -->
+        </div>
+    </section>
+    
+    <footer>
+        <p>Ankitghimire.com</p>
+        <div style="margin-top: 1rem;">
+            <a href="#" style="color: white; margin: 0 10px;">Facebook</a>
+            <a href="#" style="color: white; margin: 0 10px;">Twitter</a>
+            <a href="#" style="color: white; margin: 0 10px;">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        // City Data with Photos
+        const cities = [
+            {
+                name: "Pokhara, Nepal",
+                image: "https://images.unsplash.com/photo-1564501049415-71b8e0d21a97?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Phewa Lake & Annapurna views",
+                fact: "World Peace Pagoda offers 360° Himalayan vistas",
+                quiz: "What mountain range surrounds Pokhara?",
+                answer: "Annapurna"
+            },
+            {
+                name: "Kathmandu, Nepal",
+                image: "https://images.unsplash.com/photo-1582034986517-30d7620980f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Pashupatinath Temple",
+                fact: "Home to 7 UNESCO World Heritage Sites",
+                quiz: "Which famous temple is in Kathmandu?",
+                answer: "Pashupatinath"
+            },
+            {
+                name: "Moscow, Russia",
+                image: "https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Red Square & St. Basil's Cathedral",
+                fact: "Kremlin museums showcase Tsarist history",
+                quiz: "What colorful cathedral is in Red Square?",
+                answer: "St. Basil's Cathedral"
+            },
+            {
+                name: "Beijing, China",
+                image: "https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "The Great Wall of China",
+                fact: "Forbidden City was home to Ming dynasty emperors",
+                quiz: "What ancient wonder is near Beijing?",
+                answer: "The Great Wall"
+            },
+            {
+                name: "Kashmir, India",
+                image: "https://images.unsplash.com/photo-1582977322210-a9c0d1d161a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Dal Lake with shikara boats",
+                fact: "Famous for Mughal gardens and saffron fields",
+                quiz: "What famous lake is in Kashmir?",
+                answer: "Dal Lake"
+            },
+            {
+                name: "Seoul, South Korea",
+                image: "https://images.unsplash.com/photo-1538485399081-7a8975106c22?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Gyeongbokgung Palace",
+                fact: "Blend of Joseon dynasty history and K-pop culture",
+                quiz: "What traditional Korean clothing is called?",
+                answer: "Hanbok"
+            },
+            {
+                name: "New York, USA",
+                image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Statue of Liberty",
+                fact: "The Metropolitan Museum has ancient artifacts",
+                quiz: "What famous statue is in New York harbor?",
+                answer: "Statue of Liberty"
+            },
+            {
+                name: "Shanghai, China",
+                image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "The Bund (riverfront skyline)",
+                fact: "Jade Buddha Temple houses precious artifacts",
+                quiz: "What famous waterfront area is in Shanghai?",
+                answer: "The Bund"
+            },
+            {
+                name: "Mumbai, India",
+                image: "https://images.unsplash.com/photo-1582972236019-ea9dfa7f0b0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Gateway of India",
+                fact: "Elephanta Caves have ancient rock-cut temples",
+                quiz: "What is India's film industry called?",
+                answer: "Bollywood"
+            },
+            {
+                name: "Barcelona, Spain",
+                image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Sagrada Familia by Gaudí",
+                fact: "Gothic Quarter has medieval architecture",
+                quiz: "What famous unfinished church is in Barcelona?",
+                answer: "Sagrada Familia"
+            },
+            {
+                name: "Tokyo, Japan",
+                image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "Tokyo Tower / Shibuya Crossing",
+                fact: "Senso-ji Temple is Tokyo's oldest",
+                quiz: "What traditional Japanese art uses woodblocks?",
+                answer: "Ukiyo-e"
+            },
+            {
+                name: "Shanghai, China",
+                image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                highlight: "The Bund (riverfront skyline)",
+                fact: "Old French Concession has European architecture",
+                quiz: "What traditional Chinese art is Shanghai known for?",
+                answer: "Silk & porcelain"
+            }
+        ];
+
+        // Quiz Questions
+        const quizQuestions = [
+            {
+                question: "Which city is known as the gateway to the Annapurna Circuit?",
+                options: ["Kathmandu", "Pokhara", "Chitwan", "Lumbini"],
+                answer: "Pokhara"
+            },
+            {
+                question: "What is the main attraction in Moscow's Red Square?",
+                options: ["Eiffel Tower", "St. Basil's Cathedral", "Big Ben", "Colosseum"],
+                answer: "St. Basil's Cathedral"
+            },
+            {
+                question: "Which city is home to the Terracotta Warriors?",
+                options: ["Beijing", "Shanghai", "Tokyo", "Seoul"],
+                answer: "Beijing"
+            },
+            {
+                question: "What traditional boats are found on Dal Lake in Kashmir?",
+                options: ["Gondolas", "Shikaras", "Kayaks", "Canoes"],
+                answer: "Shikaras"
+            },
+            {
+                question: "Which city is famous for the Sagrada Familia?",
+                options: ["Barcelona", "Madrid", "Lisbon", "Rome"],
+                answer: "Barcelona"
+            }
+        ];
+
+        // Sports Facts Data
+        const sportsFacts = [
+            {
+                sport: "Cricket",
+                icon: "🏏",
+                benefits: "Improves hand-eye coordination, builds teamwork",
+                fact: "30 minutes of cricket burns about 200 calories",
+                forDiseases: "Good for ADHD, improves concentration"
+            },
+            {
+                sport: "Football",
+                icon: "⚽",
+                benefits: "Boosts cardiovascular health, builds leg strength",
+                fact: "Players run 8-12 km per match on average",
+                forDiseases: "Reduces risk of heart disease and hypertension"
+            },
+            {
+                sport: "Badminton",
+                icon: "🏸",
+                benefits: "Improves reflexes, increases flexibility",
+                fact: "Shuttlecock can reach speeds of 300 km/h",
+                forDiseases: "Helps with arthritis and joint mobility"
+            },
+            {
+                sport: "Running",
+                icon: "🏃",
+                benefits: "Strengthens bones, improves mental health",
+                fact: "Humans are the best long-distance runners in the animal kingdom",
+                forDiseases: "Reduces risk of diabetes and depression"
+            },
+            {
+                sport: "Cycling",
+                icon: "🚴",
+                benefits: "Low-impact exercise, builds endurance",
+                fact: "Tour de France cyclists burn about 5,000-8,000 calories per stage",
+                forDiseases: "Excellent for knee rehabilitation and obesity"
+            }
+        ];
+
+        // Typing Texts
+        const typingTexts = [
+            "Pokhara is a beautiful city in Nepal known for its stunning views of the Annapurna mountain range and Phewa Lake. The World Peace Pagoda offers panoramic views of the Himalayas.",
+            "Kathmandu, the capital of Nepal, is rich in cultural heritage with seven UNESCO World Heritage Sites including Pashupatinath Temple and Swayambhunath Stupa.",
+            "Moscow's Red Square is home to the colorful St. Basil's Cathedral and the Kremlin. The city showcases Russia's Tsarist history and Orthodox Christian art.",
+            "Beijing is famous for the Great Wall of China, one of the Seven Wonders of the World. The Forbidden City was the imperial palace for 24 emperors during the Ming and Qing dynasties.",
+            "Kashmir is often called 'Paradise on Earth' with its beautiful Dal Lake, Mughal gardens, and snow-capped mountains. The region is famous for saffron cultivation and apple orchards."
+        ];
+
+        // Trip Plans
+        const tripPlans = cities.map(city => ({
+            name: city.name,
+            image: city.image,
+            days: [
+                `Day 1: Arrival and visit to ${city.highlight.split('/')[0].trim()}`,
+                "Day 2: Explore local markets and cuisine",
+                "Day 3: Cultural and historical sites tour",
+                "Day 4: Nature/adventure activities",
+                "Day 5: Relaxation and departure"
+            ],
+            budget: "$500-$1000 depending on season",
+            tips: [
+                `Don't miss ${city.highlight}`,
+                "Try local street food",
+                "Learn a few basic phrases in local language",
+                "Carry appropriate clothing for the weather"
+            ]
+        }));
+
+        // DOM Elements
+        const sections = document.querySelectorAll('.section');
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const citiesContainer = document.getElementById('cities-container');
+        const quizContainer = document.getElementById('quiz-questions-container');
+        const submitQuizBtn = document.getElementById('submit-quiz');
+        const quizScore = document.getElementById('quiz-score');
+        const tripPlansContainer = document.getElementById('trip-plans-container');
+        const sportsFactsContainer = document.getElementById('sports-facts-container');
+        const typingTextElement = document.getElementById('typing-text');
+        const typingInput = document.getElementById('typing-input');
+        const timerElement = document.getElementById('timer');
+        const accuracyElement = document.getElementById('accuracy');
+        const wpmElement = document.getElementById('wpm');
+        const startTypingBtn = document.getElementById('start-typing');
+        const resetTypingBtn = document.getElementById('reset-typing');
+
+        // Navigation
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionId = button.getAttribute('data-section');
+                
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active-section');
+                });
+                
+                // Show selected section
+                document.getElementById(sectionId).classList.add('active-section');
+                
+                // Load content if needed
+                if (sectionId === 'typing') {
+                    loadTypingText();
+                }
+            });
+        });
+
+        // Load Cities
+        function loadCities() {
+            citiesContainer.innerHTML = '';
+            cities.forEach(city => {
+                const cityCard = document.createElement('div');
+                cityCard.className = 'city-card';
+                cityCard.innerHTML = `
+                    <div class="city-image" style="background-image: url('${city.image}')"></div>
+                    <div class="city-info">
+                        <h3>${city.name}</h3>
+                        <p><strong>Highlight:</strong> ${city.highlight}</p>
+                        <p><strong>Fun Fact:</strong> ${city.fact}</p>
+                        <p><strong>Quiz:</strong> ${city.quiz} (${city.answer})</p>
+                    </div>
+                `;
+                citiesContainer.appendChild(cityCard);
+            });
+        }
+
+        // Load Quiz
+        function loadQuiz() {
+            quizContainer.innerHTML = '';
+            quizQuestions.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'quiz-question';
+                questionElement.innerHTML = `
+                    <h3>Question ${index + 1}: ${question.question}</h3>
+                    <ul class="quiz-options">
+                        ${question.options.map(option => `
+                            <li class="quiz-option" data-question="${index}" data-answer="${option}">${option}</li>
+                        `).join('')}
+                    </ul>
+                    <div class="quiz-feedback" id="feedback-${index}"></div>
+                `;
+                quizContainer.appendChild(questionElement);
+            });
+            
+            // Add event listeners to options
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionIndex = this.getAttribute('data-question');
+                    const allOptions = document.querySelectorAll(`.quiz-option[data-question="${questionIndex}"]`);
+                    
+                    // Remove selected class from all options in this question
+                    allOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        // Submit Quiz
+        submitQuizBtn.addEventListener('click', () => {
+            let score = 0;
+            quizQuestions.forEach((question, index) => {
+                const selectedOption = document.querySelector(`.quiz-option.selected[data-question="${index}"]`);
+                const feedbackElement = document.getElementById(`feedback-${index}`);
+                
+                if (selectedOption) {
+                    if (selectedOption.getAttribute('data-answer') === question.answer) {
+                        score++;
+                        selectedOption.classList.add('correct');
+                        feedbackElement.textContent = "Correct!";
+                        feedbackElement.className = "quiz-feedback feedback-correct";
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        feedbackElement.textContent = `Incorrect. The correct answer is: ${question.answer}`;
+                        feedbackElement.className = "quiz-feedback feedback-incorrect";
+                        
+                        // Highlight correct answer
+                        document.querySelectorAll(`.quiz-option[data-question="${index}"]`).forEach(opt => {
+                            if (opt.getAttribute('data-answer') === question.answer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                    feedbackElement.style.display = 'block';
+                }
+            });
+            
+            quizScore.textContent = `You scored ${score} out of ${quizQuestions.length}!`;
+            quizScore.style.color = score === quizQuestions.length ? 'var(--secondary)' : 'var(--accent)';
+        });
+
+        // Load Trip Plans
+        function loadTripPlans() {
+            tripPlansContainer.innerHTML = '';
+            tripPlans.forEach(plan => {
+                const tripPlan = document.createElement('div');
+                tripPlan.className = 'trip-plan';
+                tripPlan.innerHTML = `
+                    <div class="trip-image" style="background-image: url('${plan.image}')"></div>
+                    <div class="trip-details">
+                        <h3>${plan.name} - 5 Day Plan</h3>
+                        <h4>Itinerary:</h4>
+                        <ul>
+                            ${plan.days.map(day => `<li>${day}</li>`).join('')}
+                        </ul>
+                        <p><strong>Budget:</strong> ${plan.budget}</p>
+                        <h4>Travel Tips:</h4>
+                        <ul>
+                            ${plan.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                tripPlansContainer.appendChild(tripPlan);
+            });
+        }
+
+        // Load Sports Facts
+        function loadSportsFacts() {
+            sportsFactsContainer.innerHTML = '';
+            sportsFacts.forEach(sport => {
+                const sportCard = document.createElement('div');
+                sportCard.className = 'sport-card';
+                sportCard.innerHTML = `
+                    <h3><span>${sport.icon}</span> ${sport.sport}</h3>
+                    <p><strong>Benefits:</strong> ${sport.benefits}</p>
+                    <p><strong>Interesting Fact:</strong> ${sport.fact}</p>
+                    <p><strong>Good For:</strong> ${sport.forDiseases}</p>
+                `;
+                sportsFactsContainer.appendChild(sportCard);
+            });
+        }
+
+        // Typing Test Variables
+        let startTime;
+        let timerInterval;
+        let isTyping = false;
+        let currentTypingText = '';
+
+        // Load Typing Text
+        function loadTypingText() {
+            currentTypingText = typingTexts[Math.floor(Math.random() * typingTexts.length)];
+            typingTextElement.textContent = currentTypingText;
+            typingInput.value = '';
+            timerElement.textContent = '0';
+            accuracyElement.textContent = '0';
+            wpmElement.textContent = '0';
+        }
+
+        // Start Typing Test
+        startTypingBtn.addEventListener('click', () => {
+            if (!isTyping) {
+                startTime = new Date();
+                timerInterval = setInterval(updateTimer, 1000);
+                typingInput.disabled = false;
+                typingInput.focus();
+                startTypingBtn.textContent = 'Testing...';
+                isTyping = true;
+            }
+        });
+
+        // Reset Typing Test
+        resetTypingBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            typingInput.value = '';
+            timerElement.textContent = '0';
+            accuracyElement.textContent = '0';
+            wpmElement.textContent = '0';
+            startTypingBtn.textContent = 'Start Test';
+            typingInput.disabled = true;
+            isTyping = false;
+            loadTypingText();
+        });
+
+        // Update Typing Stats
+        typingInput.addEventListener('input', () => {
+            if (!isTyping) return;
+            
+            const typedText = typingInput.value;
+            const originalText = currentTypingText.substring(0, typedText.length);
+            
+            // Calculate accuracy
+            let correctChars = 0;
+            for (let i = 0; i < typedText.length; i++) {
+                if (typedText[i] === originalText[i]) {
+                    correctChars++;
+                }
+            }
+            
+            const accuracy = Math.round((correctChars / typedText.length) * 100);
+            accuracyElement.textContent = isNaN(accuracy) ? '0' : accuracy;
+            
+            // Calculate WPM (5 chars = 1 word)
+            const timeInMinutes = (new Date() - startTime) / 60000;
+            const words = typedText.length / 5;
+            const wpm = Math.round(words / timeInMinutes);
+            wpmElement.textContent = isNaN(wpm) ? '0' : wpm;
+            
+            // If user completed the text
+            if (typedText.length === currentTypingText.length) {
+                clearInterval(timerInterval);
+                startTypingBtn.textContent = 'Completed!';
+                isTyping = false;
+            }
+        });
+
+        // Update Timer
+        function updateTimer() {
+            const seconds = Math.floor((new Date() - startTime) / 1000);
+            timerElement.textContent = seconds;
+        }
+
+        // Initialize
+        loadCities();
+        loadQuiz();
+        loadTripPlans();
+        loadSportsFacts();
+        loadTypingText();
+        typingInput.disabled = true;
+    </script>
+</body>
+</html>
